@@ -887,19 +887,25 @@ function handleTouchAction(action){
 }
 
 // ----------------------- UI & State Helpers -----------------------
-function startGame(){
-  overlay.classList.add('hidden');
-  gameOverOverlay.classList.add('hidden');
+function startGame() {
+  overlay.classList.add("hidden");
+  gameOverOverlay.classList.add("hidden");
+
   resetGameState();
-  // spawn first piece
-  for(let i=0;i<2;i++){ // spawn twice because spawnPiece will shift queue etc.
-    if(!currentPiece) spawnPiece();
-  }
+
+  currentPiece = null;
   spawnPiece();
+
   updatePreviews();
   lastGravity = performance.now();
   lastFrame = performance.now();
+
   requestAnimationFrame(update);
+
+  if (audio.state === "suspended") {
+    audio.resume();
+  }
+
   playMusic();
 }
 
