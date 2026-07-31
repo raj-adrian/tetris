@@ -1,103 +1,171 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Neon Tetris — Premium Arcade</title>
-  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+<div id="app">
+
+  <!-- Game Over Overlay -->
+  <div id="gameOverOverlay" class="overlay hidden">
+    <div class="panel glass start-panel">
+      <h2 class="neon-title">Game Over</h2>
+      <p id="finalScore" class="sub">Score: 0</p>
+      <button id="playAgainBtn" class="btn primary">Play Again</button>
+    </div>
+  </div>
   <div id="app">
-    <!-- Improved Start / Pause / Game Over overlays -->
-    <div id="overlay" class="overlay start" role="dialog" aria-modal="true" aria-labelledby="landingTitle">
-      <div class="panel glass start-panel" aria-hidden="false">
-        <div class="landing-grid">
-          <div class="landing-left">
-            <h1 id="landingTitle" class="neon-title">Neon Tetris</h1>
-            <p class="lead">A premium arcade experience — smooth gameplay, neon glow, and synth audio.</p>
 
-            <div class="cta-row">
-              <button id="startBtn" class="btn primary large" aria-label="Start Game">Start Game</button>
-              <button id="playDemoBtn" class="btn ghost" aria-label="Play Demo (preview)">Preview</button>
-            </div>
+  <!-- Main Game -->
+  <main class="container">
 
-            <div class="landing-stats">
-              <div class="stat-mini"><strong>Mode</strong><span>Classic • 10×20</span></div>
-              <div class="stat-mini"><strong>Pieces</strong><span>7-bag • SRS rotation</span></div>
-              <div class="stat-mini"><strong>Controls</strong><span>Keyboard / Touch</span></div>
-            </div>
+    <!-- Game Board -->
+    <section class="left-panel">
+      <div class="panel glass board-panel">
+        <canvas
+          id="gameCanvas"
+          width="300"
+          height="600"
+          tabindex="0"
+          aria-label="Tetris board">
+        </canvas>
+      </div>
+    <!-- Landing overlay (centered) -->
+    <div id="landingOverlay" class="landing-overlay" role="dialog" aria-modal="true" aria-labelledby="landingTitle">
+      <canvas id="landingBg" class="landing-bg" aria-hidden="true"></canvas>
 
-            <div class="controls-legend compact" aria-label="Game controls">
-              <strong>Controls</strong>
-              <div class="ctrl-grid">
-                <div><kbd>←</kbd> Move</div>
-                <div><kbd>→</kbd> Move</div>
-                <div><kbd>↓</kbd> Soft Drop</div>
-                <div><kbd>Space</kbd> Hard Drop</div>
-                <div><kbd>↑</kbd> / <kbd>X</kbd> Rotate CW</div>
-                <div><kbd>Z</kbd> Rotate CCW</div>
-                <div><kbd>C</kbd> Hold</div>
-                <div><kbd>P</kbd> Pause</div>
-              </div>
-            </div>
+      <!-- Controls (shown while playing) -->
+      <div class="panel glass controls-panel">
+      <div class="landing-card glass">
+        <header class="landing-head">
+          <h1 id="landingTitle" class="landing-title">Welcome to Neon Tetris</h1>
+          <p class="landing-sub">Stack blocks, clear lines, and challenge your high score.</p>
+        </header>
 
-            <div class="landing-footer">
-              <label class="switch inline">
-                <input id="musicToggleLanding" type="checkbox" />
-                <span class="slider"></span>
-              </label>
-              <span class="small">Music</span>
+        <h3>Controls</h3>
+        <main class="landing-body">
+          <!-- Left: controls card -->
+          <section class="controls-card glass">
+            <h2 class="controls-heading">CONTROLS</h2>
 
-              <label class="switch inline" style="margin-left:12px;">
-                <input id="sfxToggleLanding" type="checkbox" checked />
-                <span class="slider"></span>
-              </label>
-              <span class="small">SFX</span>
-
-              <div class="mobile-tip">Tip: Use the on-screen buttons for touch play</div>
-            </div>
-          </div>
-
-          <div class="landing-right" aria-hidden="true">
-            <div class="preview-wrap">
-              <canvas id="landingPreview" width="240" height="480" aria-label="Tetris board preview"></canvas>
-              <div class="preview-glow"></div>
-            </div>
-            <div class="mini-panels">
-              <div class="mini glass">Next
-                <canvas id="landingNext" width="120" height="120" aria-label="Next preview"></canvas>
-              </div>
-              <div class="mini glass">Hold
-                <canvas id="landingHold" width="120" height="120" aria-label="Hold preview"></canvas>
-              </div>
-            </div>
-          </div>
+        <div class="controls-grid">
+          <div><kbd>←</kbd> Move Left</div>
+          <div><kbd>→</kbd> Move Right</div>
+          <div><kbd>↓</kbd> Soft Drop</div>
+          <div><kbd>Space</kbd> Hard Drop</div>
+          <div><kbd>↑</kbd> / <kbd>X</kbd> Rotate</div>
+          <div><kbd>Z</kbd> Rotate CCW</div>
+          <div><kbd>C</kbd> Hold Piece</div>
+          <div><kbd>P</kbd> Pause</div>
         </div>
+            <div class="controls-grid">
+              <div class="controls-col">
+                <div class="control-row"><span class="kbd">←</span><span class="ctrl-desc">Move Left</span></div>
+                <div class="control-row"><span class="kbd">→</span><span class="ctrl-desc">Move Right</span></div>
+                <div class="control-row"><span class="kbd">↓</span><span class="ctrl-desc">Soft Drop</span></div>
+                <div class="control-row"><span class="kbd">↑</span><span class="ctrl-desc">Rotate Clockwise</span></div>
+                <div class="control-row"><span class="kbd">Z</span><span class="ctrl-desc">Rotate Counter-Clockwise</span></div>
+              </div>
+
+              <div class="controls-col">
+                <div class="control-row"><span class="kbd large">Space</span><span class="ctrl-desc">Hard Drop</span></div>
+                <div class="control-row"><span class="kbd">C</span><span class="ctrl-desc">Hold Piece</span></div>
+                <div class="control-row"><span class="kbd">P</span><span class="ctrl-desc">Pause / Resume</span></div>
+                <div class="control-row"><span class="kbd">X</span><span class="ctrl-desc">Rotate Clockwise</span></div>
+                <div class="tip-row"><span class="tip-icon">★</span><span class="tip-text">Tip: Use the on-screen buttons for touch play</span></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Right: decorative preview column -->
+          <aside class="preview-column">
+            <div class="preview-large glass" aria-hidden="true">
+              <canvas id="previewCanvas" width="220" height="360" aria-hidden="true"></canvas>
+            </div>
+
+            <div class="preview-mini-row">
+              <div class="preview-mini glass">
+                <div class="mini-title">Next</div>
+                <!-- keep ID so script.js can use it -->
+                <canvas id="nextCanvas" width="120" height="120" aria-label="Next piece"></canvas>
+              </div>
+              <div class="preview-mini glass">
+                <div class="mini-title">Hold</div>
+                <canvas id="holdCanvas" width="120" height="120" aria-label="Hold piece"></canvas>
+              </div>
+            </div>
+          </aside>
+        </main>
+
+        <footer class="landing-foot">
+          <!-- Start button positioned at bottom, centered -->
+          <button id="startBtn" class="start-btn btn-neon" aria-label="Start Game">
+            <span class="play-icon">▶</span>
+            <span class="start-text">START GAME</span>
+          </button>
+
+          <div class="landing-toggles">
+            <label class="switch"><input id="musicToggleLanding" type="checkbox"><span class="slider"></span></label>
+            <span class="toggle-label">Music</span>
+
+            <label class="switch"><input id="sfxToggleLanding" type="checkbox" checked><span class="slider"></span></label>
+            <span class="toggle-label">SFX</span>
+          </div>
+        </footer>
       </div>
     </div>
 
-    <div id="gameOverOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="gameOverTitle">
+    <!-- Game Over Overlay (unchanged) -->
+    <div id="gameOverOverlay" class="overlay hidden">
       <div class="panel glass start-panel">
-        <h2 id="gameOverTitle" class="neon-title">Game Over</h2>
+        <h2 class="neon-title">Game Over</h2>
         <p id="finalScore" class="sub">Score: 0</p>
         <button id="playAgainBtn" class="btn primary">Play Again</button>
       </div>
     </div>
 
-    <!-- Main layout -->
-    <main class="container" aria-hidden="false">
+      <!-- Mobile Controls -->
+      <div class="panel glass mobile-controls">
+        <div class="touch-row">
+          <button data-action="left" class="touch btn">◀</button>
+          <button data-action="right" class="touch btn">▶</button>
+          <button data-action="soft" class="touch btn">↓</button>
+          <button data-action="hard" class="touch btn">⤓</button>
+    <!-- Main Game layout (kept intact) -->
+    <main class="container" aria-hidden="true">
       <section class="left-panel">
         <div class="panel glass board-panel">
-          <canvas id="gameCanvas" width="300" height="600" aria-label="Tetris board"></canvas>
+          <canvas id="gameCanvas" width="300" height="600" tabindex="0" aria-label="Tetris board"></canvas>
         </div>
-        <div class="panel glass info-row mobile-controls">
-          <!-- Mobile touch controls -->
+
+        <div class="touch-row">
+          <button data-action="rotCW" class="touch btn">⟳</button>
+          <button data-action="rotCCW" class="touch btn">⟲</button>
+          <button data-action="hold" class="touch btn">H</button>
+          <button data-action="pause" class="touch btn">▮/▶</button>
+        <div class="panel glass controls-panel">
+          <h3>Controls</h3>
+          <div class="controls-grid native">
+            <div><kbd>←</kbd> Move Left</div>
+            <div><kbd>→</kbd> Move Right</div>
+            <div><kbd>↓</kbd> Soft Drop</div>
+            <div><kbd>Space</kbd> Hard Drop</div>
+            <div><kbd>↑</kbd> / <kbd>X</kbd> Rotate</div>
+            <div><kbd>Z</kbd> Rotate CCW</div>
+            <div><kbd>C</kbd> Hold Piece</div>
+            <div><kbd>P</kbd> Pause</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+        <div class="panel glass mobile-controls">
           <div class="touch-row">
             <button data-action="left" class="touch btn">◀</button>
             <button data-action="right" class="touch btn">▶</button>
             <button data-action="soft" class="touch btn">↓</button>
             <button data-action="hard" class="touch btn">⤓</button>
           </div>
+
+    <!-- Sidebar -->
+    <aside class="right-panel">
           <div class="touch-row">
             <button data-action="rotCW" class="touch btn">⟳</button>
             <button data-action="rotCCW" class="touch btn">⟲</button>
@@ -107,102 +175,218 @@
         </div>
       </section>
 
+      <div class="panel glass stats-panel">
+        <div class="stat">
+          <div class="label">Score</div>
+          <div id="score" class="value neon-text">0</div>
       <aside class="right-panel">
         <div class="panel glass stats-panel">
-          <div class="stat">
-            <div class="label">Score</div>
-            <div id="score" class="value neon-text">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">Level</div>
-            <div id="level" class="value neon-text">0</div>
-          </div>
-          <div class="stat">
-            <div class="label">Lines</div>
-            <div id="lines" class="value neon-text">0</div>
-          </div>
+          <div class="stat"><div class="label">Score</div><div id="score" class="value neon-text">0</div></div>
+          <div class="stat"><div class="label">Level</div><div id="level" class="value neon-text">1</div></div>
+          <div class="stat"><div class="label">Lines</div><div id="lines" class="value neon-text">0</div></div>
         </div>
 
+        <div class="stat">
+          <div class="label">Level</div>
+          <div id="level" class="value neon-text">1</div>
         <div class="panel glass preview-panel">
           <div class="preview-title">Next</div>
-          <canvas id="nextCanvas" width="160" height="160" aria-label="Next piece"></canvas>
+          <!-- kept for script compatibility -->
+          <canvas id="nextCanvas-hidden" width="160" height="160" style="display:none;" aria-hidden="true"></canvas>
         </div>
 
+        <div class="stat">
+          <div class="label">Lines</div>
+          <div id="lines" class="value neon-text">0</div>
         <div class="panel glass preview-panel">
           <div class="preview-title">Hold</div>
-          <canvas id="holdCanvas" width="160" height="160" aria-label="Held piece"></canvas>
+          <canvas id="holdCanvas-hidden" width="160" height="160" style="display:none;" aria-hidden="true"></canvas>
         </div>
+      </div>
 
+      <div class="panel glass preview-panel">
+        <div class="preview-title">Next</div>
+        <canvas id="nextCanvas" width="160" height="160"></canvas>
+      </div>
         <div class="panel glass audio-panel">
           <div class="audio-row">
             <button id="musicToggle" class="btn">Music: Off</button>
-            <label class="switch">
-              <input id="sfxToggle" type="checkbox" checked />
-              <span class="slider"></span>
-            </label>
+            <label class="switch"><input id="sfxToggle" type="checkbox" checked><span class="slider"></span></label>
             <span class="small">SFX</span>
           </div>
           <div class="credits">Built with ♥ — No external libraries</div>
         </div>
       </aside>
     </main>
+
+      <div class="panel glass preview-panel">
+        <div class="preview-title">Hold</div>
+        <canvas id="holdCanvas" width="160" height="160"></canvas>
+      </div>
   </div>
 
+      <div class="panel glass audio-panel">
+        <div class="audio-row">
+          <button id="musicToggle" class="btn">Music: Off</button>
+  <!-- Keep original script.js unchanged -->
   <script src="script.js"></script>
 
+          <label class="switch">
+            <input id="sfxToggle" type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+  <!-- Landing-only small script: wire Start button, mirror toggles, decorative preview -->
   <script>
-    // Hook landing toggles to main UI toggles so state matches
     (function(){
+      // Wire Start button to existing startGame() if available
+      const startBtn = document.getElementById('startBtn');
+      if(startBtn){
+        startBtn.addEventListener('click', () => {
+          // Hide landing overlay (so game canvas is accessible)
+          const overlay = document.getElementById('landingOverlay');
+          if(overlay) overlay.style.display = 'none';
+          // Call startGame if it's been defined by script.js
+          if(typeof startGame === 'function') {
+            try { startGame(); } catch(e) { console.warn('startGame threw:', e); }
+          }
+        });
+      }
+
+          <span class="small">SFX</span>
+        </div>
+      // Mirror landing toggles with main toggles if present
       const musicLanding = document.getElementById('musicToggleLanding');
       const sfxLanding = document.getElementById('sfxToggleLanding');
       const musicMain = document.getElementById('musicToggle');
       const sfxMain = document.getElementById('sfxToggle');
 
-      // mirror states both ways
-      musicLanding.addEventListener('change', ()=> {
-        musicMain.textContent = musicLanding.checked ? 'Music: On' : 'Music: Off';
-        musicMain.dataset._checked = musicLanding.checked;
-        // trigger click on main toggle to use existing logic if available
-        if (musicMain && typeof toggleMusic === 'function') toggleMusic();
-      });
-      sfxLanding.addEventListener('change', ()=> {
-        if(sfxMain) sfxMain.checked = sfxLanding.checked;
-        // reflect in script.js toggle variable if present
-        if (typeof sfxToggle !== 'undefined') sfxToggle.checked = sfxLanding.checked;
-      });
-
-      // Preview canvases: draw simple grid + demo tetromino so landing feels alive
-      const preview = document.getElementById('landingPreview');
-      const pctx = preview.getContext('2d');
-      function drawPreviewDemo(){
-        pctx.clearRect(0,0,preview.width,preview.height);
-        pctx.fillStyle = '#07111f';
-        pctx.fillRect(0,0,preview.width,preview.height);
-        // small sample block to hint game area
-        pctx.fillStyle = '#001826';
-        pctx.fillRect(8,8,preview.width-16,preview.height-16);
-        // draw neon title block
-        pctx.fillStyle = 'rgba(0,240,255,0.06)';
-        pctx.fillRect(30,30,preview.width-60,90);
-        pctx.fillStyle = '#00f0ff';
-        pctx.fillRect(36,36,preview.width-72,24);
+        <div class="credits">
+          Built with ♥ — No external libraries
+        </div>
+      </div>
+      if(musicLanding && musicMain){
+        musicLanding.addEventListener('change', ()=> {
+          musicMain.textContent = musicLanding.checked ? 'Music: On' : 'Music: Off';
+          if(typeof toggleMusic === 'function') toggleMusic();
+        });
       }
-      drawPreviewDemo();
+      if(sfxLanding && sfxMain){
+        sfxLanding.addEventListener('change', ()=> {
+          sfxMain.checked = sfxLanding.checked;
+          if(typeof sfxToggle !== 'undefined') sfxToggle.checked = sfxLanding.checked;
+        });
+      }
 
-      // Play Demo button: brief preview animation (pulse)
-      const demoBtn = document.getElementById('playDemoBtn');
-      demoBtn.addEventListener('click', ()=>{
-        const el = document.querySelector('.preview-wrap');
-        el.classList.add('pulse');
-        setTimeout(()=> el.classList.remove('pulse'), 900);
-      });
+      // Decorative landing preview drawing (non-gameplay)
+      const preview = document.getElementById('previewCanvas');
+      if(preview){
+        const ctx = preview.getContext('2d');
+        function drawPreview(){
+          ctx.clearRect(0,0,preview.width,preview.height);
+          // subtle checker background
+          ctx.fillStyle = '#07111f';
+          ctx.fillRect(0,0,preview.width,preview.height);
+          for(let y=0;y<12;y++){
+            for(let x=0;x<6;x++){
+              ctx.fillStyle = (x+y)%2 ? 'rgba(255,255,255,0.01)' : 'rgba(255,255,255,0.00)';
+              ctx.fillRect(x*36+8, y*28+6, 32, 24);
+            }
+          }
+          // simple neon block cluster
+          ctx.fillStyle = 'rgba(0,240,255,0.12)';
+          ctx.fillRect(88,120,32,32);
+          ctx.fillStyle = '#00f0ff';
+          ctx.fillRect(120,120,24,24);
+        }
+        drawPreview();
+      }
 
-      // Start button should focus the game canvas right after click (improves mobile)
-      const startBtn = document.getElementById('startBtn');
-      startBtn.addEventListener('click', ()=> {
-        const gameCanvas = document.getElementById('gameCanvas');
-        if(gameCanvas) gameCanvas.focus({preventScroll:true});
-      });
+      // Landing background / particles (lightweight)
+      const bgCanvas = document.getElementById('landingBg');
+      if(bgCanvas){
+        const ctx = bgCanvas.getContext('2d');
+        const DPR = window.devicePixelRatio || 1;
+        function resize(){
+          bgCanvas.width = Math.round(window.innerWidth * DPR);
+          bgCanvas.height = Math.round(window.innerHeight * DPR);
+          bgCanvas.style.width = window.innerWidth + 'px';
+          bgCanvas.style.height = window.innerHeight + 'px';
+          ctx.setTransform(DPR,0,0,DPR,0,0);
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+    </aside>
+        // few floating tetrominoes
+        const parts = [];
+        const shapes = [
+          [[1,1],[1,1]],
+          [[1],[1],[1],[1]],
+          [[0,1],[1,1],[1,0]],
+          [[1,1,0],[0,1,1]],
+          [[0,1,0],[1,1,1]]
+        ];
+        const colors = ['#00f0ff','#8a3bff','#00ff8a','#ff4b6b'];
+        for(let i=0;i<12;i++){
+          parts.push({
+            x: Math.random()*window.innerWidth,
+            y: Math.random()*window.innerHeight,
+            vx: (Math.random()-0.5)*0.25,
+            vy: 0.1 + Math.random()*0.3,
+            s: 8 + Math.random()*20,
+            rot: Math.random()*Math.PI*2,
+            rotS: (Math.random()-0.5)*0.002,
+            shape: shapes[Math.floor(Math.random()*shapes.length)],
+            color: colors[Math.floor(Math.random()*colors.length)],
+            a: 0.06 + Math.random()*0.12
+          });
+        }
+
+  </main>
+        function drawBlock(x,y,size,color,alpha){
+          ctx.globalAlpha = alpha;
+          ctx.fillStyle = color;
+          const r = Math.max(2, size*0.12);
+          ctx.beginPath();
+          ctx.moveTo(x+r,y);
+          ctx.arcTo(x+size,y,x+size,y+size,r);
+          ctx.arcTo(x+size,y+size,x,y+size,r);
+          ctx.arcTo(x,y+size,x,y,r);
+          ctx.arcTo(x,y,x+size,y,r);
+          ctx.closePath();
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+
+</div>
+        function anim(){
+          ctx.clearRect(0,0,bgCanvas.width/DPR,bgCanvas.height/DPR);
+          for(const p of parts){
+            p.x += p.vx; p.y += p.vy; p.rot += p.rotS;
+            if(p.y > window.innerHeight + 80) p.y = -80;
+            if(p.x < -120) p.x = window.innerWidth + 80;
+            if(p.x > window.innerWidth + 120) p.x = -80;
+
+<script src="script.js"></script>
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            const grid = p.shape;
+            const rows = grid.length, cols = grid[0].length;
+            const gap = 4, size = p.s;
+            for(let r=0;r<rows;r++){
+              for(let c=0;c<cols;c++){
+                if(grid[r][c]){
+                  drawBlock((c - cols/2) * (size + gap), (r - rows/2) * (size + gap), size, p.color, p.a);
+                }
+              }
+            }
+            ctx.restore();
+          }
+          requestAnimationFrame(anim);
+        }
+        anim();
+      }
     })();
   </script>
 </body>
