@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Neon Tetris — Premium Arcade</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Start / Pause / Game Over overlays -->
+    <div id="overlay" class="overlay start">
+      <div class="panel glass start-panel">
+        <h1 class="neon-title">Neon Tetris</h1>
+        <p class="sub">Premium arcade experience — smooth gameplay, neon glow, and synth audio.</p>
+        <button id="startBtn" class="btn primary">Start Game</button>
+        <div class="controls-legend">
+          <strong>Controls</strong>
+          <div>← → : Move</div>
+          <div>↓ : Soft Drop</div>
+          <div>Space : Hard Drop</div>
+          <div>Up / X : Rotate CW</div>
+          <div>Z : Rotate CCW</div>
+          <div>C : Hold</div>
+          <div>P : Pause</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="gameOverOverlay" class="overlay hidden">
+      <div class="panel glass start-panel">
+        <h2 class="neon-title">Game Over</h2>
+        <p id="finalScore" class="sub">Score: 0</p>
+        <button id="playAgainBtn" class="btn primary">Play Again</button>
+      </div>
+    </div>
+
+    <!-- Main layout -->
+    <main class="container">
+      <section class="left-panel">
+        <div class="panel glass board-panel">
+          <canvas id="gameCanvas" width="300" height="600" aria-label="Tetris board"></canvas>
+        </div>
+        <div class="panel glass info-row mobile-controls">
+          <!-- Mobile touch controls -->
+          <div class="touch-row">
+            <button data-action="left" class="touch btn">◀</button>
+            <button data-action="right" class="touch btn">▶</button>
+            <button data-action="soft" class="touch btn">↓</button>
+            <button data-action="hard" class="touch btn">⤓</button>
+          </div>
+          <div class="touch-row">
+            <button data-action="rotCW" class="touch btn">⟳</button>
+            <button data-action="rotCCW" class="touch btn">⟲</button>
+            <button data-action="hold" class="touch btn">H</button>
+            <button data-action="pause" class="touch btn">▮/▶</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="right-panel">
+        <div class="panel glass stats-panel">
+          <div class="stat">
+            <div class="label">Score</div>
+            <div id="score" class="value neon-text">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">Level</div>
+            <div id="level" class="value neon-text">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">Lines</div>
+            <div id="lines" class="value neon-text">0</div>
+          </div>
+        </div>
+
+        <div class="panel glass preview-panel">
+          <div class="preview-title">Next</div>
+          <canvas id="nextCanvas" width="160" height="160" aria-label="Next piece"></canvas>
+        </div>
+
+        <div class="panel glass preview-panel">
+          <div class="preview-title">Hold</div>
+          <canvas id="holdCanvas" width="160" height="160" aria-label="Held piece"></canvas>
+        </div>
+
+        <div class="panel glass audio-panel">
+          <div class="audio-row">
+            <button id="musicToggle" class="btn">Music: Off</button>
+            <label class="switch">
+              <input id="sfxToggle" type="checkbox" checked />
+              <span class="slider"></span>
+            </label>
+            <span class="small">SFX</span>
+          </div>
+          <div class="credits">Built with ♥ — No external libraries</div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
