@@ -196,13 +196,6 @@
         el.classList.add('pulse');
         setTimeout(()=> el.classList.remove('pulse'), 900);
       });
-
-      // Start button should focus the game canvas right after click (improves mobile)
-      const startBtn = document.getElementById('startBtn');
-      startBtn.addEventListener('click', ()=> {
-        const gameCanvas = document.getElementById('gameCanvas');
-        if(gameCanvas) gameCanvas.focus({preventScroll:true});
-      });
     })();
   </script>
 </body>
