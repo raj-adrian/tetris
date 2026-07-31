@@ -7,75 +7,99 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Background particle canvas (pure landing visual) -->
+  <!-- Background animation canvas (decorative only) -->
   <canvas id="bgCanvas" aria-hidden="true"></canvas>
 
-  <!-- Landing overlay (centered both vertically and horizontally) -->
+  <!-- Centered landing overlay -->
   <div id="overlay" class="landing" role="dialog" aria-modal="true" aria-labelledby="landingTitle">
-    <div class="glass-card landing-card">
-      <header class="landing-header">
-        <h1 id="landingTitle" class="title neon">TETRIS</h1>
-        <p class="subtitle">Welcome to Tetris! Stack blocks, clear lines, and challenge yourself to achieve the highest score.</p>
+    <div class="landing-inner">
+      <!-- Decorative floating tetrominoes -->
+      <div class="float tetro t1"></div>
+      <div class="float tetro t2"></div>
+      <div class="float tetro t3"></div>
+      <div class="float tetro t4"></div>
+      <div class="float tetro t5"></div>
+
+      <header class="hero">
+        <h1 id="landingTitle" class="brand">TETRIS</h1>
+        <p class="lead">Welcome to Tetris!<br /><span class="muted">Stack. Clear. Survive.</span></p>
       </header>
 
-      <div class="landing-main">
-        <div class="left-column">
-          <!-- Large Start Button -->
-          <button id="startBtn" class="btn start-btn" aria-label="Start Game">Start Game</button>
+      <div class="cta">
+        <button id="startBtn" class="btn start"><span class="play">►</span> START GAME</button>
+      </div>
 
-          <!-- Controls section -->
-          <section class="controls glass-panel" aria-label="Controls">
-            <h3 class="controls-title">Controls</h3>
-            <div class="controls-grid">
-              <div class="control"><span class="key">←</span><span class="desc">Move Left</span></div>
-              <div class="control"><span class="key">→</span><span class="desc">Move Right</span></div>
-              <div class="control"><span class="key">↓</span><span class="desc">Soft Drop</span></div>
-              <div class="control"><span class="key">↑</span><span class="desc">Rotate CW</span></div>
-              <div class="control"><span class="key">X</span><span class="desc">Rotate CW</span></div>
-              <div class="control"><span class="key">Z</span><span class="desc">Rotate CCW</span></div>
-              <div class="control"><span class="key">Space</span><span class="desc">Hard Drop</span></div>
-              <div class="control"><span class="key">C</span><span class="desc">Hold Piece</span></div>
-              <div class="control"><span class="key">P</span><span class="desc">Pause / Resume</span></div>
+      <section class="controls-wrap glass">
+        <h2 class="controls-heading">CONTROLS</h2>
+
+        <div class="controls-grid">
+          <div class="col">
+            <div class="control">
+              <div class="key">←</div>
+              <div class="txt">Move Left</div>
             </div>
-          </section>
+            <div class="control">
+              <div class="key">→</div>
+              <div class="txt">Move Right</div>
+            </div>
+            <div class="control">
+              <div class="key">↓</div>
+              <div class="txt">Soft Drop</div>
+            </div>
+            <div class="control">
+              <div class="key">↑</div>
+              <div class="txt">Rotate Clockwise</div>
+            </div>
+            <div class="control">
+              <div class="key">Z</div>
+              <div class="txt">Rotate Counter-Clockwise</div>
+            </div>
+          </div>
 
-          <div class="landing-footer">
-            <label class="switch">
-              <input id="musicToggleLanding" type="checkbox" />
-              <span class="slider"></span>
-            </label>
-            <span class="small">Music</span>
-
-            <label class="switch" style="margin-left:12px;">
-              <input id="sfxToggleLanding" type="checkbox" checked />
-              <span class="slider"></span>
-            </label>
-            <span class="small">SFX</span>
+          <div class="col">
+            <div class="control">
+              <div class="key large">Space</div>
+              <div class="txt">Hard Drop</div>
+            </div>
+            <div class="control">
+              <div class="key">C</div>
+              <div class="txt">Hold Piece</div>
+            </div>
+            <div class="control">
+              <div class="key">P</div>
+              <div class="txt">Pause / Resume</div>
+            </div>
+            <div class="control">
+              <div class="key">X</div>
+              <div class="txt">Rotate Clockwise</div>
+            </div>
+            <div class="control tip-row">
+              <div class="tip-icon">★</div>
+              <div class="tip-txt">Tip: Use the on-screen buttons for touch play</div>
+            </div>
           </div>
         </div>
+      </section>
 
-        <aside class="right-column">
-          <!-- Decorative / preview area: keep IDs used by game so script.js won't break -->
-          <div class="preview glass-panel preview-large" aria-hidden="true">
-            <canvas id="landingPreview" width="200" height="400" aria-hidden="true"></canvas>
-          </div>
+      <footer class="landing-footer">
+        <div class="toggles glass">
+          <label class="switch">
+            <input id="musicToggleLanding" type="checkbox" />
+            <span class="slider"></span>
+          </label>
+          <span class="toggle-label">Music</span>
 
-          <div class="preview-row">
-            <div class="preview glass-panel small-preview">
-              <div class="preview-label">Next</div>
-              <canvas id="nextCanvas" width="120" height="120" aria-label="Next piece preview"></canvas>
-            </div>
-            <div class="preview glass-panel small-preview">
-              <div class="preview-label">Hold</div>
-              <canvas id="holdCanvas" width="120" height="120" aria-label="Hold preview"></canvas>
-            </div>
-          </div>
-        </aside>
-      </div>
+          <label class="switch" style="margin-left:14px;">
+            <input id="sfxToggleLanding" type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+          <span class="toggle-label">SFX</span>
+        </div>
+      </footer>
     </div>
   </div>
 
-  <!-- Game area kept in DOM so script.js can initialize without changes -->
+  <!-- Keep the existing game DOM intact and unchanged for script.js -->
   <main class="container" aria-hidden="true">
     <section class="left-panel">
       <div class="panel glass board-panel">
@@ -99,38 +123,25 @@
 
     <aside class="right-panel">
       <div class="panel glass stats-panel">
-        <div class="stat">
-          <div class="label">Score</div>
-          <div id="score" class="value neon-text">0</div>
-        </div>
-        <div class="stat">
-          <div class="label">Level</div>
-          <div id="level" class="value neon-text">0</div>
-        </div>
-        <div class="stat">
-          <div class="label">Lines</div>
-          <div id="lines" class="value neon-text">0</div>
-        </div>
+        <div class="stat"><div class="label">Score</div><div id="score" class="value neon-text">0</div></div>
+        <div class="stat"><div class="label">Level</div><div id="level" class="value neon-text">0</div></div>
+        <div class="stat"><div class="label">Lines</div><div id="lines" class="value neon-text">0</div></div>
       </div>
 
       <div class="panel glass preview-panel">
         <div class="preview-title">Next</div>
-        <!-- duplicate kept for script compatibility -->
-        <canvas id="nextCanvas-hidden" width="160" height="160" aria-hidden="true" style="display:none"></canvas>
+        <canvas id="nextCanvas" width="160" height="160" aria-label="Next piece"></canvas>
       </div>
 
       <div class="panel glass preview-panel">
         <div class="preview-title">Hold</div>
-        <canvas id="holdCanvas-hidden" width="160" height="160" aria-hidden="true" style="display:none"></canvas>
+        <canvas id="holdCanvas" width="160" height="160" aria-label="Held piece"></canvas>
       </div>
 
       <div class="panel glass audio-panel">
         <div class="audio-row">
           <button id="musicToggle" class="btn">Music: Off</button>
-          <label class="switch">
-            <input id="sfxToggle" type="checkbox" checked />
-            <span class="slider"></span>
-          </label>
+          <label class="switch"><input id="sfxToggle" type="checkbox" checked /><span class="slider"></span></label>
           <span class="small">SFX</span>
         </div>
         <div class="credits">Built with ♥ — No external libraries</div>
@@ -138,175 +149,119 @@
     </aside>
   </main>
 
-  <!-- Keep script.js unchanged; it will wire Start button and canvases -->
   <script src="script.js"></script>
 
-  <!-- Landing-only small script: mirror landing toggles to main toggles and animate tiny landing preview -->
+  <!-- Landing-specific JS: mirror toggles, minor preview paint & background particles.
+       This does not change game logic; it only improves landing UX. -->
   <script>
     (function(){
-      // Mirror landing toggles to main UI
-      const mLanding = document.getElementById('musicToggleLanding');
-      const sLanding = document.getElementById('sfxToggleLanding');
-      const mMain = document.getElementById('musicToggle');
-      const sMain = document.getElementById('sfxToggle');
+      // Mirror landing toggles to main UI toggles if present
+      const musicLanding = document.getElementById('musicToggleLanding');
+      const sfxLanding = document.getElementById('sfxToggleLanding');
+      const musicMain = document.getElementById('musicToggle');
+      const sfxMain = document.getElementById('sfxToggle');
 
-      if(mLanding && mMain){
-        mLanding.addEventListener('change', ()=> {
-          // toggle text on main music button for parity if present
-          mMain.textContent = mLanding.checked ? 'Music: On' : 'Music: Off';
-          // attempt to call toggleMusic if available
+      if(musicLanding && musicMain){
+        musicLanding.addEventListener('change', ()=>{
+          musicMain.textContent = musicLanding.checked ? 'Music: On' : 'Music: Off';
           if(typeof toggleMusic === 'function') toggleMusic();
         });
       }
-      if(sLanding && sMain){
-        sLanding.addEventListener('change', ()=> {
-          sMain.checked = sLanding.checked;
-          if(typeof sfxToggle !== 'undefined') sfxToggle.checked = sLanding.checked;
+      if(sfxLanding && sfxMain){
+        sfxLanding.addEventListener('change', ()=> {
+          sfxMain.checked = sfxLanding.checked;
+          if(typeof sfxToggle !== 'undefined') sfxToggle.checked = sfxLanding.checked;
         });
       }
 
-      // Draw a subtle mock preview on the landing canvas so the page feels alive
+      // Small decorative preview canvas (non-gameplay)
       const preview = document.getElementById('landingPreview');
       if(preview){
         const ctx = preview.getContext('2d');
-        function draw(){
-          ctx.clearRect(0,0,preview.width,preview.height);
-          ctx.fillStyle = '#07111f';
-          ctx.fillRect(0,0,preview.width,preview.height);
-          // simple decorative grid and a floating tetromino-like block
-          ctx.strokeStyle = 'rgba(255,255,255,0.02)';
-          for(let y=0;y<10;y++){
-            for(let x=0;x<5;x++){
-              ctx.strokeRect(10 + x*36, 20 + y*36, 32, 32);
-            }
-          }
-          // a neon tetromino shape
-          ctx.fillStyle = 'rgba(0,240,255,0.12)';
-          ctx.fillRect(10+36*1+4, 20+36*2+4, 32, 32);
-          ctx.fillRect(10+36*2+4, 20+36*2+4, 32, 32);
-          ctx.fillRect(10+36*3+4, 20+36*2+4, 32, 32);
-          ctx.fillStyle = '#00f0ff';
-          ctx.fillRect(10+36*2+8, 20+36*1+8, 24, 24);
+        ctx.fillStyle = '#07111f';
+        ctx.fillRect(0,0,preview.width,preview.height);
+      }
+
+      // Background particle / floating tetromino canvas
+      const bg = document.getElementById('bgCanvas');
+      if(bg){
+        const ctx = bg.getContext('2d');
+        const DPR = window.devicePixelRatio || 1;
+        let W = window.innerWidth, H = window.innerHeight;
+        function resize(){ W = window.innerWidth; H = window.innerHeight; bg.width = Math.round(W*DPR); bg.height = Math.round(H*DPR); bg.style.width = W+'px'; bg.style.height = H+'px'; ctx.setTransform(DPR,0,0,DPR,0,0); }
+        window.addEventListener('resize', resize); resize();
+
+        // particles (small count, decorative)
+        const colors = ['#00f0ff','#8a3bff','#00ff8a','#ff4b6b'];
+        const shapes = [
+          [[1,1],[1,1]],
+          [[1],[1],[1],[1]],
+          [[0,1],[1,1],[1,0]],
+          [[1,1,0],[0,1,1]],
+          [[0,1,0],[1,1,1]]
+        ];
+        const particles = [];
+        for(let i=0;i<14;i++){
+          particles.push({
+            x: Math.random()*W, y: Math.random()*H,
+            vx: (Math.random()-0.5)*0.2, vy: 0.15+Math.random()*0.25,
+            s: 10 + Math.random()*18, color: colors[Math.floor(Math.random()*colors.length)],
+            shape: shapes[Math.floor(Math.random()*shapes.length)],
+            rot: Math.random()*Math.PI*2, rotS: (Math.random()-0.5)*0.001, a: 0.06+Math.random()*0.12
+          });
         }
-        draw();
-      }
-
-      // Start button focus helper: when starting, focus game canvas for keyboard
-      const start = document.getElementById('startBtn');
-      start && start.addEventListener('click', ()=>{
-        setTimeout(()=> {
-          const g = document.getElementById('gameCanvas');
-          try { g && g.focus(); } catch(e){}
-        }, 150);
-      });
-    })();
-  </script>
-
-  <!-- Landing background particle animation (small, non-blocking). Keeps file independent of script.js -->
-  <script>
-    (function(){
-      const canvas = document.getElementById('bgCanvas');
-      if(!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const DPR = window.devicePixelRatio || 1;
-      let W, H;
-      function resize(){
-        W = canvas.clientWidth = window.innerWidth;
-        H = canvas.clientHeight = window.innerHeight;
-        canvas.width = Math.round(W * DPR);
-        canvas.height = Math.round(H * DPR);
-        ctx.setTransform(DPR,0,0,DPR,0,0);
-      }
-      window.addEventListener('resize', resize);
-      resize();
-
-      // simple floating tetromino-like particles
-      const colors = ['#00f0ff','#00aaff','#5ef0ff','rgba(0,240,255,0.14)'];
-      const shapes = [
-        // small 2x2 (O)
-        [[1,1],[1,1]],
-        // I (1x4)
-        [[1],[1],[1],[1]],
-        // J
-        [[1,0],[1,1],[1,0]],
-        // L
-        [[0,1],[1,1],[0,1]],
-        // S / Z / T small approximations
-        [[0,1,1],[1,1,0]],
-        [[1,1,0],[0,1,1]],
-        [[0,1,0],[1,1,1]],
-      ];
-
-      const particles = [];
-      for(let i=0;i<16;i++){
-        particles.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          vx: (Math.random() - 0.5) * 0.2,
-          vy: (Math.random() * 0.25) + 0.03,
-          scale: 0.5 + Math.random()*1.1,
-          color: colors[Math.floor(Math.random()*colors.length)],
-          shape: shapes[Math.floor(Math.random()*shapes.length)],
-          rot: Math.random()*Math.PI*2,
-          rotSpeed: (Math.random()-0.5)*0.002,
-          alpha: 0.06 + Math.random()*0.12
-        });
-      }
-
-      function drawBlock(px,py,size,color,alpha){
-        ctx.fillStyle = color;
-        ctx.globalAlpha = alpha;
-        const r = Math.max(2, size*0.12);
-        ctx.beginPath();
-        ctx.roundRect ? ctx.roundRect(px,py,size,size,r) : (
-          ctx.moveTo(px+r,py),
-          ctx.lineTo(px+size-r,py),
-          ctx.quadraticCurveTo(px+size,py,px+size,py+r),
-          ctx.lineTo(px+size,py+size-r),
-          ctx.quadraticCurveTo(px+size,py+size,px+size-r,py+size),
-          ctx.lineTo(px+r,py+size),
-          ctx.quadraticCurveTo(px,py+size,px,py+size-r),
-          ctx.lineTo(px,py+r),
-          ctx.quadraticCurveTo(px,py,px+r,py)
-        );
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-
-      function step(){
-        ctx.clearRect(0,0,W,H);
-        for(const p of particles){
-          p.x += p.vx;
-          p.y += p.vy;
-          p.rot += p.rotSpeed;
-          // wrap
-          if(p.y - 40 > H) p.y = -40;
-          if(p.x < -60) p.x = W + 40;
-          if(p.x > W + 60) p.x = -40;
-
-          // draw shape
-          const base = 12 * p.scale;
-          const gap = 3 * p.scale;
-          const s = p.shape;
-          const rows = s.length;
-          const cols = s[0].length;
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.rot);
-          for(let r=0;r<rows;r++){
-            for(let c=0;c<cols;c++){
-              if(s[r][c]){
-                const px = (c - cols/2) * (base + gap);
-                const py = (r - rows/2) * (base + gap);
-                drawBlock(px + W*0.0001, py, base, p.color, p.alpha);
+        function drawBlock(x,y,size,color,alpha){
+          ctx.globalAlpha = alpha;
+          ctx.fillStyle = color;
+          const r = Math.max(2, size*0.12);
+          // rounded rect
+          ctx.beginPath();
+          ctx.moveTo(x+r,y);
+          ctx.arcTo(x+size,y,x+size,y+size,r);
+          ctx.arcTo(x+size,y+size,x,y+size,r);
+          ctx.arcTo(x,y+size,x,y,r);
+          ctx.arcTo(x,y,x+size,y,r);
+          ctx.closePath();
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+        function loop(){
+          ctx.clearRect(0,0,W,H);
+          for(const p of particles){
+            p.x += p.vx; p.y += p.vy; p.rot += p.rotS;
+            if(p.y > H + 80) p.y = -80;
+            if(p.x < -120) p.x = W+80;
+            if(p.x > W+120) p.x = -80;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            const grid = p.shape;
+            const rows = grid.length, cols = grid[0].length;
+            const gap = 4, size = p.s;
+            for(let r=0;r<rows;r++){
+              for(let c=0;c<cols;c++){
+                if(grid[r][c]){
+                  drawBlock((c - cols/2) * (size + gap), (r - rows/2) * (size + gap), size, p.color, p.a);
+                }
               }
             }
+            ctx.restore();
           }
-          ctx.restore();
+          requestAnimationFrame(loop);
         }
-        requestAnimationFrame(step);
+        loop();
       }
-      step();
+
+      // Focus helper: when user clicks Start, allow the original script's handler to run and then focus canvas
+      const startBtn = document.getElementById('startBtn');
+      if(startBtn){
+        startBtn.addEventListener('click', ()=>{
+          setTimeout(()=> {
+            const g = document.getElementById('gameCanvas');
+            try { g && g.focus(); } catch(e){}
+          }, 170);
+        });
+      }
     })();
   </script>
 </body>
