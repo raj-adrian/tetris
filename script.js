@@ -1,3 +1,10 @@
+/* Neon Tetris — script.js
+   - Clean, well-commented implementation of Tetris features:
+     board 10x20, 7-bag, SRS rotations with wall kicks, ghost piece,
+     hold, next preview, scoring, levels, audio (WebAudio), responsive rendering.
+   - No external libraries.
+*/
+
 // ----------------------- Configuration & Constants -----------------------
 const COLS = 10;
 const ROWS = 20;
@@ -1047,8 +1054,16 @@ function toggleMusic(){
   }
 }
 
+// ----------------------- Start up -----------------------
 init();
 
 // Make sure canvas is focusable for keyboard events
 canvas.setAttribute('tabindex','0');
 canvas.addEventListener('focus', ()=>{ /* optional visual */ });
+
+// expose certain functions for debugging (optional)
+// window.tetris = {board, spawnPiece, hardDrop, rotatePiece};
+
+// Automatically show the start overlay (already visible by default). The Start button begins the game.
+
+/* End of script.js */
