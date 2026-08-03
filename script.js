@@ -1,10 +1,3 @@
-/* Neon Tetris — script.js
-   - Clean, well-commented implementation of Tetris features:
-     board 10x20, 7-bag, SRS rotations with wall kicks, ghost piece,
-     hold, next preview, scoring, levels, audio (WebAudio), responsive rendering.
-   - No external libraries.
-*/
-
 // ----------------------- Configuration & Constants -----------------------
 const COLS = 10;
 const ROWS = 20;
@@ -276,6 +269,8 @@ const holdCtx = holdCanvas.getContext('2d', {alpha:true});
 const scoreEl = document.getElementById('score');
 const levelEl = document.getElementById('level');
 const linesEl = document.getElementById('lines');
+const startBtn = document.getElementById('startBtn');
+const overlay = document.getElementById('overlay');
 const gameOverOverlay = document.getElementById('gameOverOverlay');
 const finalScoreEl = document.getElementById('finalScore');
 const playAgainBtn = document.getElementById('playAgainBtn');
@@ -814,7 +809,8 @@ function attachEvents(){
   // keyboard controls
   window.addEventListener('keydown', onKeyDown);
   window.addEventListener('keyup', onKeyUp);
-  playAgainBtn.addEventListener('click', restartGame);
+  startBtn.addEventListener('click', startGame);
+  playAgainBtn.addEventListener('click', startGame);
   musicToggleBtn.addEventListener('click', toggleMusic);
   sfxToggle.addEventListener('change', ()=> sfxEnabled = sfxToggle.checked);
 
@@ -884,24 +880,20 @@ function handleTouchAction(action){
 }
 
 // ----------------------- UI & State Helpers -----------------------
-function startGame() {
-    resetGameState();
-
-    currentPiece = null;
-    spawnPiece();
-
-    updatePreviews();
-
-    lastGravity = performance.now();
-    lastFrame = performance.now();
-
-    if (audio.state === "suspended") {
-        audio.resume();
-    }
-
-    playMusic();
-
-    requestAnimationFrame(update);
+function startGame(){
+  overlay.classList.add('hidden');
+  gameOverOverlay.classList.add('hidden');
+  resetGameState();
+  // spawn first piece
+  for(let i=0;i<2;i++){ // spawn twice because spawnPiece will shift queue etc.
+    if(!currentPiece) spawnPiece();
+  }
+  spawnPiece();
+  updatePreviews();
+  lastGravity = performance.now();
+  lastFrame = performance.now();
+  requestAnimationFrame(update);
+  playMusic();
 }
 
 function endGame(){
@@ -913,12 +905,22 @@ function endGame(){
   stopMusic();
 }
 
-function togglePause() {
-    if (gameOver) return;
-    paused = !paused;
-    if (!paused) {
-        lastGravity = performance.now();
-    }
+function togglePause(){
+  if(gameOver) return;
+  paused = !paused;
+  const overlayEl = document.getElementById('overlay');
+  if(paused){
+    overlayEl.classList.remove('hidden');
+    overlayEl.classList.add('start');
+    overlayEl.querySelector('.start-panel .neon-title').textContent = 'Paused';
+    overlayEl.querySelector('#startBtn').textContent = 'Resume';
+    overlayEl.querySelector('.controls-legend').style.display = 'none';
+  } else {
+    overlayEl.classList.add('hidden');
+    overlayEl.querySelector('.start-panel .neon-title').textContent = 'Neon Tetris';
+    overlayEl.querySelector('#startBtn').textContent = 'Start Game';
+    overlayEl.querySelector('.controls-legend').style.display = 'block';
+  }
 }
 
 function updateStats(){
@@ -1045,31 +1047,7 @@ function toggleMusic(){
   }
 }
 
-function startGame() {
-    resetGameState();
-
-    currentPiece = null;
-    spawnPiece();
-
-    updatePreviews();
-
-    lastGravity = performance.now();
-    lastFrame = performance.now();
-
-    if (audio.state === "suspended") {
-        audio.resume();
-    }
-
-    playMusic();
-
-    requestAnimationFrame(update);
-}
-
 init();
-
-window.addEventListener("load", () => {
-    startGame();
-});
 
 // Make sure canvas is focusable for keyboard events
 canvas.setAttribute('tabindex','0');
